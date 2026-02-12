@@ -1,21 +1,56 @@
+import { useStorage } from "@/hooks/useStorage";
+import { type WheelDataList, wheelData } from "@/utils/wheel-data";
 import ListOption from "./list-option";
 import { Button } from "./ui/button";
 import { Heading } from "./ui/typography";
 
 export default function Menu() {
+  const [lsValue, setLSValue] = useStorage(wheelData, "wheel_data");
+
+  function remove(id: number) {
+    const edited = lsValue.list.filter((item) => item.id !== id);
+    setLSValue({ idCounter: lsValue.idCounter, list: edited });
+  }
+
+  function clear() {
+    const counter = 1;
+    setLSValue({ idCounter: counter, list: [{ id: counter, title: "", weight: "" }] });
+  }
+
+  function add() {
+    const counter = lsValue.idCounter + 1;
+
+    setLSValue({
+      idCounter: counter,
+      list: [...lsValue.list, { id: counter, title: "", weight: "" }],
+    });
+  }
+
+  function update(newValue: WheelDataList) {
+    const updated = lsValue.list.map((item) => (item.id === newValue.id ? newValue : item));
+
+    setLSValue({
+      idCounter: lsValue.idCounter,
+      list: [...updated],
+    });
+  }
+
   return (
     <div className="bg-muted/50 w-full max-w-3xl rounded-lg flex flex-col p-5 gap-5 text-center">
       <Heading size={"h2"}>Decision Making Tool</Heading>
+
       <div className="flex gap-2.5">
-        <Button>Add</Button>
-        <Button>Clear All</Button>
+        <Button onClick={add}>Add</Button>
+        <Button onClick={clear}>Clear All</Button>
         <Button>Load</Button>
         <Button>Save</Button>
         <Button>Start</Button>
       </div>
 
-      <div>
-        <ListOption></ListOption>
+      <div className="flex flex-col gap-2.5">
+        {lsValue.list.map((data) => (
+          <ListOption key={`${data.id}.`} data={data} remove={remove} update={update}></ListOption>
+        ))}
       </div>
     </div>
   );
