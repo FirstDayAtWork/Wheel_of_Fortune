@@ -25,7 +25,8 @@ export default function ListOption(props: ListOptionProps) {
     setOptionValue({
       id: optionValue.id,
       title: type === "title" ? value : optionValue.title,
-      weight: type === "weight" ? value : optionValue.weight,
+      weight: type === "weight" ? +value : optionValue.weight,
+      hash: crypto.randomUUID(),
     });
   }
 
@@ -36,7 +37,7 @@ export default function ListOption(props: ListOptionProps) {
 
   return (
     <div className="flex gap-2.5">
-      <Label htmlFor={id} className="text-sm flex-none">
+      <Label htmlFor={id.toString()} className="text-sm flex-none">
         {`#${optionValue.id}`}
       </Label>
 
@@ -45,7 +46,7 @@ export default function ListOption(props: ListOptionProps) {
         type="text"
         placeholder="Title"
         name="title"
-        id={id}
+        id={id.toString()}
         className="flex-4 h-9"
         value={optionValue.title}
       ></Input>

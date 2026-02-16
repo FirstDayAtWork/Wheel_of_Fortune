@@ -9,9 +9,10 @@ export function useStorage<T>(
   const getItem: T = getLSData(key) ?? initValue;
   const [value, setValue] = useState(getItem);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     setLSData(key, value);
-  }, [value, key]);
+  }, [value]);
 
   return [value, setValue, removeLSData];
 }

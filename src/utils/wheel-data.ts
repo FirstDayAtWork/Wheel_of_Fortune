@@ -4,18 +4,20 @@ export interface WheelData {
 }
 
 export type WheelDataList = {
+  hash: `${string}-${string}-${string}-${string}-${string}`;
   id: number;
   title: string;
-  weight: string;
+  weight: number;
 };
 
 export const wheelData: WheelData = {
   idCounter: 1,
   list: [
     {
-      id: 1,
+      hash: crypto.randomUUID(),
       title: "",
-      weight: "",
+      weight: 1,
+      id: 1,
     },
   ],
 };
