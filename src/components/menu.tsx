@@ -2,6 +2,7 @@ import { useStorage } from "@/hooks/useStorage";
 import { type WheelDataList, wheelData } from "@/utils/wheel-data";
 import ListOption from "./list-option";
 import { LoadFileModal } from "./load-file-modal/load-file-modal";
+import { SaveFileModal } from "./save-file-modal/save-file-modal";
 import { Button } from "./ui/button";
 import { Heading } from "./ui/typography";
 
@@ -53,7 +54,7 @@ export default function Menu() {
 
         <LoadFileModal replace={replace} />
 
-        <Button>Save</Button>
+        <SaveFileModal data={lsValue} />
 
         <Button>Start</Button>
       </div>
