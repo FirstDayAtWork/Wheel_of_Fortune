@@ -1,13 +1,18 @@
+import { useNavigate } from "@tanstack/react-router";
+import { BrushCleaningIcon, PlayIcon, PlusIcon } from "lucide-react";
 import { useStorage } from "@/hooks/useStorage";
 import { type WheelDataList, wheelData } from "@/utils/wheel-data";
 import ListOption from "./list-option";
 import { LoadFileModal } from "./load-file-modal/load-file-modal";
 import { SaveFileModal } from "./save-file-modal/save-file-modal";
 import { Button } from "./ui/button";
+import { ButtonGroup } from "./ui/button-group";
 import { Heading } from "./ui/typography";
 
 export default function Menu() {
   const [lsValue, setLSValue] = useStorage(wheelData, "wheel_data");
+
+  const navigate = useNavigate();
 
   function remove(id: number) {
     const edited = lsValue.list.filter((item) => item.id !== id);
@@ -43,20 +48,35 @@ export default function Menu() {
     });
   }
 
+  function start() {
+    navigate({ to: "/wheel" });
+  }
+
   return (
     <div className="bg-muted/50 w-full max-w-3xl rounded-lg flex flex-col p-5 gap-5 text-center">
       <Heading size={"h2"}>Decision Making Tool</Heading>
 
-      <div className="flex gap-2.5">
-        <Button onClick={add}>Add</Button>
+      <div className="flex gap-2.5 items-center">
+        <ButtonGroup className="gap-2.5">
+          <Button onClick={add}>
+            <PlusIcon className="size-5" />
+            Add
+          </Button>
 
-        <Button onClick={clear}>Clear All</Button>
+          <Button onClick={clear}>
+            <BrushCleaningIcon className="size-5" />
+            Clear All
+          </Button>
 
-        <LoadFileModal replace={replace} />
+          <LoadFileModal replace={replace} />
 
-        <SaveFileModal data={lsValue} />
+          <SaveFileModal data={lsValue} />
 
-        <Button>Start</Button>
+          <Button onClick={start} disabled={lsValue.list.length < 2}>
+            <PlayIcon className="size-5" />
+            Start Wheel
+          </Button>
+        </ButtonGroup>
       </div>
 
       <div className="flex flex-col gap-2.5">

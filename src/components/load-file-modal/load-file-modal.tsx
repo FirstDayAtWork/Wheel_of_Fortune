@@ -1,3 +1,4 @@
+import { FileUpIcon } from "lucide-react";
 import { type ChangeEvent, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -85,7 +86,10 @@ export function LoadFileModal(props: LoadFileModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Load</Button>
+        <Button>
+          <FileUpIcon className="size-5" />
+          Load
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

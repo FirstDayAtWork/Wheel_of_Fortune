@@ -1,3 +1,4 @@
+import { SaveIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import type { WheelData } from "@/utils/wheel-data";
 import SaveFileButton from "./save-file-button";
 
@@ -22,7 +22,10 @@ export function SaveFileModal(props: SaveFileModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Save</Button>
+        <Button>
+          <SaveIcon className="size-5" />
+          Save
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

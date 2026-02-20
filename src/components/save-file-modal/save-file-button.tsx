@@ -42,7 +42,7 @@ export default function saveFileButton(props: SaveFileButtonProps) {
 
       <DialogClose asChild>
         <Button onClick={saveFile} className="uppercase">
-          {name}
+          {`save as ${name}`}
         </Button>
       </DialogClose>
     </>
