@@ -2,18 +2,20 @@ import { Link } from "@tanstack/react-router";
 import { CircleArrowLeftIcon, DicesIcon, LoaderPinwheelIcon } from "lucide-react";
 import { type ChangeEvent, useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
+import type { Settings } from "@/utils/wheel-data";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 type WheelMenuProps = {
-  updateSettings: (newValue: number) => void;
-  settingsDuration: number;
+  updateDuration: (newValue: number) => void;
+  updateSpinningStatus: (newStatus: boolean) => void;
+  settings: Settings;
 };
 
 export default function WheelMenu(props: WheelMenuProps) {
-  const { updateSettings, settingsDuration } = props;
+  const { updateDuration, updateSpinningStatus, settings } = props;
 
-  const [duration, setDuration] = useState(settingsDuration || 5);
+  const [duration, setDuration] = useState(settings.duration || 5);
   const delayedDuration = useDebounce(duration, 500);
 
   function handleDurationChange(event: ChangeEvent<HTMLInputElement>) {
@@ -24,15 +26,19 @@ export default function WheelMenu(props: WheelMenuProps) {
     setDuration(Math.floor(Math.random() * 99) + 2);
   }
 
+  function handleWheelSpin() {
+    updateSpinningStatus(true);
+  }
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    updateSettings(delayedDuration);
+    updateDuration(delayedDuration);
   }, [delayedDuration]);
 
   return (
     <div className="flex gap-2.5">
       <Link to={"/"}>
-        <Button variant={"outline"}>
+        <Button variant={"outline"} disabled={settings.isSpinning}>
           <CircleArrowLeftIcon className="size-5" />
           BACK
         </Button>
@@ -48,14 +54,20 @@ export default function WheelMenu(props: WheelMenuProps) {
         max={100}
         value={duration}
         title="Duration"
+        disabled={settings.isSpinning}
       ></Input>
 
-      <Button onClick={handleRandomDuration} variant={"outline"} title="Set Random Duration">
+      <Button
+        onClick={handleRandomDuration}
+        variant={"outline"}
+        title="Set Random Duration"
+        disabled={settings.isSpinning}
+      >
         <DicesIcon className="size-5" />
         RANDOM
       </Button>
 
-      <Button className="w-40">
+      <Button className="w-40" onClick={handleWheelSpin} disabled={settings.isSpinning}>
         <LoaderPinwheelIcon className="size-5" />
         SPIN WHEEL
       </Button>
