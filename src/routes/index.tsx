@@ -1,5 +1,5 @@
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
-import Menu from "@/components/menu";
+import Menu from "@/components/menu/menu";
 import { Loader } from "@/components/ui/loader";
 
 export const Route = createFileRoute("/")({ component: App });

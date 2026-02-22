@@ -2,9 +2,9 @@ import { TrashIcon } from "lucide-react";
 import { type ChangeEvent, useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import type { WheelDataList } from "@/utils/wheel-data";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 type ListOptionProps = {
   data: WheelDataList;

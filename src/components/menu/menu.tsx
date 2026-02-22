@@ -2,12 +2,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { BrushCleaningIcon, PlayIcon, PlusIcon } from "lucide-react";
 import { useStorage } from "@/hooks/useStorage";
 import { type WheelDataList, wheelData } from "@/utils/wheel-data";
+import { LoadFileModal } from "../load-file-modal/load-file-modal";
+import { SaveFileModal } from "../save-file-modal/save-file-modal";
+import { Button } from "../ui/button";
+import { ButtonGroup } from "../ui/button-group";
+import { Heading } from "../ui/typography";
 import ListOption from "./list-option";
-import { LoadFileModal } from "./load-file-modal/load-file-modal";
-import { SaveFileModal } from "./save-file-modal/save-file-modal";
-import { Button } from "./ui/button";
-import { ButtonGroup } from "./ui/button-group";
-import { Heading } from "./ui/typography";
 
 export default function Menu() {
   const [lsValue, setLSValue] = useStorage(wheelData, "wheel_data");
@@ -65,7 +65,7 @@ export default function Menu() {
 
           <Button onClick={clear}>
             <BrushCleaningIcon className="size-5" />
-            Clear All
+            Clear
           </Button>
 
           <LoadFileModal replace={replace} />
@@ -74,7 +74,7 @@ export default function Menu() {
 
           <Button onClick={start} disabled={lsValue.list.length < 2}>
             <PlayIcon className="size-5" />
-            Start Wheel
+            Start
           </Button>
         </ButtonGroup>
       </div>
