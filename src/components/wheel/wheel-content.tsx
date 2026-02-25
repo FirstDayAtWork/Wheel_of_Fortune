@@ -28,7 +28,9 @@ export default function WheelContent() {
         updateSpinningStatus={updateSpinningStatus}
         settings={settings}
       />
+
       <FeedBack feedback={feedback} />
+
       <WheelCanvas
         settings={settings}
         updateFeedback={updateFeedback}

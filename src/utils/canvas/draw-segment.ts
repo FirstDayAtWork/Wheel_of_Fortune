@@ -54,14 +54,6 @@ export function drawSegment(
       end: Math.floor(endOfSegment % 360),
     };
 
-    const center = Math.PI * 1.5 * (180 / Math.PI);
-
-    // for (const element of Object.keys(wheelOptions)) {
-    //   if (wheelOptions[element].start < center && wheelOptions[element].end > center) {
-    //     (arrayOfDomElements[4] as HTMLInputElement).value = wheelOptions[element].title;
-    //   }
-    // }
-
     startOfSegment += sizeOfSection;
     endOfSegment += sizeOfSection;
 

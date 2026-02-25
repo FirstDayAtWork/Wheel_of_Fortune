@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useStorage } from "@/hooks/useStorage";
 import { createCanvas } from "@/utils/canvas/create-canvas";
 import { draw } from "@/utils/canvas/draw";
+import { getWinner } from "@/utils/canvas/get-winner";
 import { spinWheel } from "@/utils/canvas/spin-wheel";
 import type { CanvasData } from "@/utils/canvas/types";
 import type { Settings, WheelData } from "@/utils/wheel-data";
@@ -14,8 +15,9 @@ type WheelCanvasProps = {
 
 export default function WheelCanvas(props: WheelCanvasProps) {
   const { settings, updateSpinningStatus, updateFeedback } = props;
-  const canvasReference = useRef<HTMLCanvasElement>(null);
 
+  const canvasReference = useRef<HTMLCanvasElement>(null);
+  const canvasWheelData = useRef<CanvasData[]>(null);
   const [wheelData] = useStorage<WheelData>(
     {
       idCounter: 0,
@@ -23,16 +25,6 @@ export default function WheelCanvas(props: WheelCanvasProps) {
     },
     "wheel_data",
   );
-
-  const canvasWheelData = useRef<CanvasData[]>(null);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (canvasWheelData.current && settings.isSpinning) {
-      spinWheel(canvasWheelData.current, settings.duration);
-      updateSpinningStatus(false);
-    }
-  }, [settings.isSpinning]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -44,6 +36,42 @@ export default function WheelCanvas(props: WheelCanvasProps) {
       }
     }
   }, []);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (!canvasWheelData.current || !settings.isSpinning) return;
+
+    spinWheel(canvasWheelData.current, settings.duration);
+
+    const timeoutId = setTimeout(
+      () => {
+        updateSpinningStatus(false);
+      },
+      settings.duration * 1000 + 200,
+    );
+
+    return () => clearTimeout(timeoutId);
+  }, [settings.isSpinning]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    let animationId: number;
+
+    function updateWinner() {
+      if (!settings.isSpinning || !canvasWheelData.current) return;
+
+      const winner = getWinner(canvasWheelData.current[2]);
+      updateFeedback(winner);
+
+      animationId = requestAnimationFrame(updateWinner);
+    }
+
+    if (settings.isSpinning) {
+      updateWinner();
+    }
+
+    return () => cancelAnimationFrame(animationId);
+  }, [settings.isSpinning]);
 
   return (
     <div className="max-w-lg self-center">

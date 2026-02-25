@@ -33,7 +33,6 @@ export function LoadFileModal(props: LoadFileModalProps) {
     const files = event.target.files;
 
     if (files?.[0]) {
-      console.log(files[0]);
       const text = await fileToText(files[0]);
       let res: string | Omit<WheelDataList, "id" | "hash">[] = "";
 
