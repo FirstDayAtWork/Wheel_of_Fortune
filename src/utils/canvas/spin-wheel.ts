@@ -1,43 +1,48 @@
 import { easeInOutSine } from "./animation-fn";
+import { calculateTargetRotation } from "./calculate-target-rotation";
 import { draw } from "./draw";
-import { getPercent } from "./get-percent";
-import type { CanvasWheel, randomColors, WheelOptions } from "./types";
+import { getWinner } from "./get-winner";
+
+import type { CanvasData } from "./types";
 
 export function spinWheel(
-  canvasData: (CanvasWheel & WheelOptions & randomColors[])[],
+  canvasData: CanvasData,
   duration: number,
+  numFromApi: number,
+  onComplete: () => void,
 ) {
-  let speed = 0;
-  let currentDegre = 0;
+  const [options, _, wheelOptions] = canvasData;
 
-  let maxRotation = Math.floor(Math.random() * (360 * 6 - 360 * 3 + 1)) + 360 * 3;
+  const rotationDistance = calculateTargetRotation(numFromApi, options.trueCords, options.lsData);
 
-  const start = Date.now();
-  const time = duration;
+  const fullSpins = 360 * 5;
+  const totalDistToTravel = fullSpins + rotationDistance;
 
-  function animate() {
-    const currentTime = Math.floor((Date.now() - start) / 1000);
+  const startRotation = options.currentRotation;
+  const startTime = performance.now();
 
-    if (currentTime >= time) {
+  function animate(currentTime: number) {
+    const elapsed = (currentTime - startTime) / (duration * 1000);
+
+    if (elapsed >= 1) {
+      const finalAngle = (startRotation + totalDistToTravel) % 360;
+      options.currentRotation = finalAngle;
+
+      draw(canvasData, finalAngle);
+      onComplete();
       return;
     }
 
-    speed = easeInOutSine(getPercent(currentDegre, maxRotation, 0)) * 20;
+    const progress = easeInOutSine(Math.min(elapsed, 1));
+    const currentAngle = startRotation + totalDistToTravel * progress;
 
-    if (speed < 0.05) {
-      speed = 0;
-    }
+    draw(canvasData, currentAngle % 360);
 
-    currentDegre += speed;
-
-    draw(canvasData, currentDegre);
+    const currentWinner = getWinner(wheelOptions);
+    window.dispatchEvent(new CustomEvent("wheelUpdate", { detail: currentWinner }));
 
     requestAnimationFrame(animate);
   }
-
-  if (speed !== 0) return;
-  currentDegre = 0;
-  maxRotation = Math.floor(Math.random() * (360 * 6 - 360 * 3 + 1)) + 360 * 3 * time;
 
   requestAnimationFrame(animate);
 }

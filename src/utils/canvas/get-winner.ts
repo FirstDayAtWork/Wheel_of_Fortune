@@ -1,22 +1,17 @@
 import type { WheelOptions } from "./types";
 
-const center = Math.PI * 1.5 * (180 / Math.PI);
-const normalizedCenter = center % 360;
-
 export function getWinner(wheelOptions: WheelOptions): string {
+  const center = 270;
+
   for (const key in wheelOptions) {
-    const segment = wheelOptions[key];
-
-    if (!segment) continue;
-
-    const { start, end, title } = segment;
+    const { start, end, title } = wheelOptions[key];
 
     if (start <= end) {
-      if (start <= normalizedCenter && normalizedCenter <= end) {
+      if (start <= center && center <= end) {
         return title;
       }
     } else {
-      if (normalizedCenter >= start || normalizedCenter <= end) {
+      if (center >= start || center <= end) {
         return title;
       }
     }

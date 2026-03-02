@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
+import { getRandomNumber } from "@/api/get-random-number";
 import { useStorage } from "@/hooks/useStorage";
 import { createCanvas } from "@/utils/canvas/create-canvas";
 import { draw } from "@/utils/canvas/draw";
-import { getWinner } from "@/utils/canvas/get-winner";
 import { spinWheel } from "@/utils/canvas/spin-wheel";
 import type { CanvasData } from "@/utils/canvas/types";
 import type { Settings, WheelData } from "@/utils/wheel-data";
@@ -33,6 +33,7 @@ export default function WheelCanvas(props: WheelCanvasProps) {
 
       if (canvasWheelData.current) {
         draw(canvasWheelData.current, 0);
+        canvasWheelData.current[0].trueCords = { ...canvasWheelData.current[2] };
       }
     }
   }, []);
@@ -41,37 +42,30 @@ export default function WheelCanvas(props: WheelCanvasProps) {
   useEffect(() => {
     if (!canvasWheelData.current || !settings.isSpinning) return;
 
-    spinWheel(canvasWheelData.current, settings.duration);
+    (async () => {
+      if (!canvasWheelData.current) return;
+      const totalWeight = canvasWheelData?.current[0].lsData.list.reduce((a, b) => a + b.weight, 0);
 
-    const timeoutId = setTimeout(
-      () => {
+      const numFromApi = await getRandomNumber(totalWeight);
+
+      spinWheel(canvasWheelData.current, settings.duration, numFromApi, () => {
         updateSpinningStatus(false);
-      },
-      settings.duration * 1000 + 200,
-    );
-
-    return () => clearTimeout(timeoutId);
+        if (!canvasWheelData.current) return;
+        canvasWheelData.current[0].trueCords = { ...canvasWheelData.current[2] };
+      });
+    })();
   }, [settings.isSpinning]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    let animationId: number;
+    const handleWheelUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      updateFeedback(customEvent.detail);
+    };
 
-    function updateWinner() {
-      if (!settings.isSpinning || !canvasWheelData.current) return;
-
-      const winner = getWinner(canvasWheelData.current[2]);
-      updateFeedback(winner);
-
-      animationId = requestAnimationFrame(updateWinner);
-    }
-
-    if (settings.isSpinning) {
-      updateWinner();
-    }
-
-    return () => cancelAnimationFrame(animationId);
-  }, [settings.isSpinning]);
+    window.addEventListener("wheelUpdate", handleWheelUpdate);
+    return () => window.removeEventListener("wheelUpdate", handleWheelUpdate);
+  }, []);
 
   return (
     <div className="max-w-lg self-center">

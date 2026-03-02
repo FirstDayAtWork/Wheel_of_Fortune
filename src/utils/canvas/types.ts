@@ -6,6 +6,8 @@ export interface CanvasWheel {
   height: number;
   lsData: WheelData;
   currentDegre?: number;
+  currentRotation: number;
+  trueCords: WheelOptions;
 }
 
 export interface randomColors {
@@ -23,4 +25,4 @@ export type WheelOptions = Record<
   }
 >;
 
-export type CanvasData = CanvasWheel & randomColors[] & WheelOptions;
+export type CanvasData = [CanvasWheel, randomColors[], WheelOptions];

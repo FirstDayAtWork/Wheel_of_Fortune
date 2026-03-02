@@ -2,7 +2,7 @@ import type { WheelData } from "../wheel-data";
 import { generateColors } from "./generate-colors";
 import type { CanvasData, CanvasWheel, WheelOptions } from "./types";
 
-export function createCanvas(canvas: HTMLCanvasElement, lsData: WheelData): CanvasData[] | null {
+export function createCanvas(canvas: HTMLCanvasElement, lsData: WheelData): CanvasData | null {
   const width = 512;
   const height = 512;
 
@@ -20,9 +20,11 @@ export function createCanvas(canvas: HTMLCanvasElement, lsData: WheelData): Canv
       width: width,
       height: height,
       lsData: lsData,
+      currentRotation: 0,
+      trueCords: {},
     };
 
-    return [options, colors, wheelOptions] as CanvasData[];
+    return [options, colors, wheelOptions];
   }
 
   return null;

@@ -1,23 +1,31 @@
 import { drawSegment } from "./draw-segment";
-import type { CanvasWheel, randomColors, WheelOptions } from "./types";
+import type { CanvasData } from "./types";
 
-export function draw(
-  canvasData: (CanvasWheel & WheelOptions & randomColors[])[],
-  currentDegre = 0,
-) {
-  const [options, colors, wheelOptions] = canvasData;
+export function draw(canvasData: CanvasData, currentDegre = 0) {
+  const [options, colors] = canvasData;
   const { context, width, height, lsData } = options;
 
-  if (options.context) {
+  if (context) {
     const radius = height / 2 - 20;
     context.clearRect(0, 0, width, height);
+
     context.beginPath();
     context.arc(width / 2, height / 2, radius, 0, 2 * Math.PI);
     context.lineWidth = 2;
     context.strokeStyle = "white";
     context.stroke();
 
-    drawSegment(context, radius, width, height, lsData, currentDegre, colors, wheelOptions);
+    const updatedOptions = drawSegment(
+      context,
+      radius,
+      width,
+      height,
+      lsData,
+      currentDegre,
+      colors,
+    );
+
+    canvasData[2] = updatedOptions;
 
     context.beginPath();
     context.arc(width / 2, height / 2, height / 12, 0, 2 * Math.PI);
