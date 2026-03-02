@@ -11,7 +11,7 @@ export function spinWheel(
   numFromApi: number,
   onComplete: () => void,
 ) {
-  const [options, _, wheelOptions] = canvasData;
+  const [options] = canvasData;
 
   const rotationDistance = calculateTargetRotation(numFromApi, options.trueCords, options.lsData);
 
@@ -38,7 +38,7 @@ export function spinWheel(
 
     draw(canvasData, currentAngle % 360);
 
-    const currentWinner = getWinner(wheelOptions);
+    const currentWinner = getWinner(canvasData[2]);
     window.dispatchEvent(new CustomEvent("wheelUpdate", { detail: currentWinner }));
 
     requestAnimationFrame(animate);

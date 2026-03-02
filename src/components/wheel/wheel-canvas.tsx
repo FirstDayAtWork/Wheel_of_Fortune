@@ -17,7 +17,7 @@ export default function WheelCanvas(props: WheelCanvasProps) {
   const { settings, updateSpinningStatus, updateFeedback } = props;
 
   const canvasReference = useRef<HTMLCanvasElement>(null);
-  const canvasWheelData = useRef<CanvasData[]>(null);
+  const canvasWheelData = useRef<CanvasData>(null);
   const [wheelData] = useStorage<WheelData>(
     {
       idCounter: 0,
