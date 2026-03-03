@@ -9,15 +9,14 @@ export function drawSegment(
   lsData: WheelData,
   currentDegre: number,
   colors: randomColors[],
+  totalWeight: number,
 ): WheelOptions {
   const newWheelOptions: WheelOptions = {};
   let startOfSegment = currentDegre;
 
-  const total = lsData.list.reduce((a, b) => a + +b.weight, 0);
-
   for (let index = 0; index < lsData.list.length; index++) {
     const item = lsData.list[index];
-    const sizeOfSection = (360 * item.weight) / total;
+    const sizeOfSection = (360 * item.weight) / totalWeight;
     const endOfSegment = startOfSegment + sizeOfSection;
 
     context.beginPath();
@@ -42,10 +41,10 @@ export function drawSegment(
     const textAngle = (Math.PI / 180) * (startOfSegment + sizeOfSection / 2);
     context.rotate(textAngle);
 
-    context.font = "22px monospace";
+    context.font = "22px Roboto Mono, monospace";
     context.fillStyle = "oklch(0.985 0.002 247.839)";
     context.textAlign = "center";
-    const sliceOfText = item.title.length > 7 ? `${item.title.slice(0, 7)}...` : item.title;
+    const sliceOfText = item.title.length > 11 ? `${item.title.slice(0, 11)}...` : item.title;
     context.fillText(sliceOfText, height / 3, 7);
     context.restore();
 

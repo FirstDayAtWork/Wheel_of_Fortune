@@ -2,12 +2,13 @@ import type { WheelData } from "../wheel-data";
 import { generateOklchColors } from "./generate-colors";
 import type { CanvasData, CanvasWheel, WheelOptions } from "./types";
 
-export function createCanvas(canvas: HTMLCanvasElement, lsData: WheelData): CanvasData | null {
-  const width = 712;
-  const height = 712;
-
-  canvas.width = width;
-  canvas.height = height;
+export function createCanvas(
+  canvas: HTMLCanvasElement,
+  lsData: WheelData,
+  size: number,
+): CanvasData | null {
+  canvas.width = size;
+  canvas.height = size;
 
   const context = canvas.getContext("2d");
 
@@ -17,11 +18,12 @@ export function createCanvas(canvas: HTMLCanvasElement, lsData: WheelData): Canv
   if (context) {
     const options: CanvasWheel = {
       context: context,
-      width: width,
-      height: height,
+      width: size,
+      height: size,
       lsData: lsData,
       currentRotation: 0,
       trueCords: {},
+      totalWeight: lsData.list.reduce((a, b) => a + b.weight, 0),
     };
 
     return [options, colors, wheelOptions];

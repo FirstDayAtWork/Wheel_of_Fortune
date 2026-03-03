@@ -10,11 +10,13 @@ import type { Settings, WheelData } from "@/utils/wheel-data";
 type WheelCanvasProps = {
   updateFeedback: (newValue: string) => void;
   updateSpinningStatus: (newStatus: boolean) => void;
+  handleDialogOpen: () => void;
   settings: Settings;
+  size: number;
 };
 
 export default function WheelCanvas(props: WheelCanvasProps) {
-  const { settings, updateSpinningStatus, updateFeedback } = props;
+  const { settings, size, updateSpinningStatus, updateFeedback, handleDialogOpen } = props;
 
   const canvasReference = useRef<HTMLCanvasElement>(null);
   const canvasWheelData = useRef<CanvasData>(null);
@@ -29,7 +31,7 @@ export default function WheelCanvas(props: WheelCanvasProps) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (canvasReference.current) {
-      canvasWheelData.current = createCanvas(canvasReference.current, wheelData);
+      canvasWheelData.current = createCanvas(canvasReference.current, wheelData, size);
 
       if (canvasWheelData.current) {
         draw(canvasWheelData.current, 0);
@@ -44,12 +46,16 @@ export default function WheelCanvas(props: WheelCanvasProps) {
 
     (async () => {
       if (!canvasWheelData.current) return;
-      const totalWeight = canvasWheelData?.current[0].lsData.list.reduce((a, b) => a + b.weight, 0);
+      canvasWheelData.current[0].totalWeight = canvasWheelData?.current[0].lsData.list.reduce(
+        (a, b) => a + b.weight,
+        0,
+      );
 
-      const numFromApi = await getRandomNumber(totalWeight);
+      const numFromApi = await getRandomNumber(canvasWheelData.current[0].totalWeight);
 
       spinWheel(canvasWheelData.current, settings.duration, numFromApi, () => {
         updateSpinningStatus(false);
+        handleDialogOpen();
         if (!canvasWheelData.current) return;
         canvasWheelData.current[0].trueCords = { ...canvasWheelData.current[2] };
       });

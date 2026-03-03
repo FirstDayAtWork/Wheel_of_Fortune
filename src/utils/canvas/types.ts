@@ -8,6 +8,7 @@ export interface CanvasWheel {
   currentDegre?: number;
   currentRotation: number;
   trueCords: WheelOptions;
+  totalWeight: number;
 }
 
 export type randomColors = string;

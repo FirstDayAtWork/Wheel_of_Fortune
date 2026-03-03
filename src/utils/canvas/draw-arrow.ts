@@ -4,10 +4,6 @@ export function drawArrow(context: CanvasRenderingContext2D, width: number) {
   const arrowHeight = 60;
   const topY = 2;
 
-  context.shadowBlur = 8;
-  context.shadowOffsetY = 4;
-  context.shadowColor = "rgba(0,0,0,0.25)";
-
   context.beginPath();
   context.moveTo(centerX - arrowWidth / 2, topY);
   context.lineTo(centerX + arrowWidth / 2, topY);

@@ -6,7 +6,7 @@ import type { CanvasData } from "./types";
 
 export function draw(canvasData: CanvasData, currentDegre = 0) {
   const [options, colors] = canvasData;
-  const { context, width, height, lsData } = options;
+  const { context, width, height, lsData, totalWeight } = options;
 
   if (context) {
     const radius = height / 2 - 20;
@@ -22,6 +22,7 @@ export function draw(canvasData: CanvasData, currentDegre = 0) {
       lsData,
       currentDegre,
       colors,
+      totalWeight,
     );
 
     canvasData[2] = updatedOptions;

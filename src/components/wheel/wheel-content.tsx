@@ -4,10 +4,16 @@ import { settingsDefaultValue } from "@/utils/wheel-data";
 import FeedBack from "./feedback";
 import WheelCanvas from "./wheel-canvas";
 import WheelMenu from "./wheel-menu";
+import { WinnerModal } from "./winner-modal";
 
 export default function WheelContent() {
   const [settings, setSettings] = useStorage(settingsDefaultValue, "settings");
   const [feedback, setFeedback] = useState("Press Spin Wheel Button!");
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleDialogOpen() {
+    setIsOpen((prev) => !prev);
+  }
 
   function updateDuration(newValue: number) {
     setSettings({ ...settings, duration: newValue });
@@ -35,7 +41,11 @@ export default function WheelContent() {
         settings={settings}
         updateFeedback={updateFeedback}
         updateSpinningStatus={updateSpinningStatus}
+        handleDialogOpen={handleDialogOpen}
+        size={712}
       />
+
+      <WinnerModal isOpen={isOpen} handleDialogOpen={handleDialogOpen} feedback={feedback} />
     </div>
   );
 }
