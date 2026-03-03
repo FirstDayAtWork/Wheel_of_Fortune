@@ -1,4 +1,3 @@
-// Add to calculate-target.ts
 import type { WheelData } from "../wheel-data";
 import type { WheelOptions } from "./types";
 

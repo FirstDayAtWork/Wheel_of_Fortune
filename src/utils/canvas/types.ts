@@ -10,11 +10,7 @@ export interface CanvasWheel {
   trueCords: WheelOptions;
 }
 
-export interface randomColors {
-  red: number;
-  green: number;
-  blue: number;
-}
+export type randomColors = string;
 
 export type WheelOptions = Record<
   string,

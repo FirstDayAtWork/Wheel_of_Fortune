@@ -1,17 +1,17 @@
 import type { WheelData } from "../wheel-data";
-import { generateColors } from "./generate-colors";
+import { generateOklchColors } from "./generate-colors";
 import type { CanvasData, CanvasWheel, WheelOptions } from "./types";
 
 export function createCanvas(canvas: HTMLCanvasElement, lsData: WheelData): CanvasData | null {
-  const width = 512;
-  const height = 512;
+  const width = 712;
+  const height = 712;
 
   canvas.width = width;
   canvas.height = height;
 
   const context = canvas.getContext("2d");
 
-  const colors = generateColors(lsData.list.length);
+  const colors = generateOklchColors({ count: lsData.list.length });
   const wheelOptions: WheelOptions = {};
 
   if (context) {

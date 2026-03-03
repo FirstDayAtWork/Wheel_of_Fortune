@@ -1,8 +1,7 @@
-import { easeInOutSine } from "./animation-fn";
+import { easeInOutBack } from "./animation-fn";
 import { calculateTargetRotation } from "./calculate-target-rotation";
 import { draw } from "./draw";
 import { getWinner } from "./get-winner";
-
 import type { CanvasData } from "./types";
 
 export function spinWheel(
@@ -33,7 +32,7 @@ export function spinWheel(
       return;
     }
 
-    const progress = easeInOutSine(Math.min(elapsed, 1));
+    const progress = easeInOutBack(elapsed);
     const currentAngle = startRotation + totalDistToTravel * progress;
 
     draw(canvasData, currentAngle % 360);

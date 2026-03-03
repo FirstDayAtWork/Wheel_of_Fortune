@@ -30,9 +30,9 @@ export function drawSegment(
       (Math.PI / 180) * endOfSegment,
     );
 
-    context.fillStyle = `rgb(${colors[index].red}, ${colors[index].green}, ${colors[index].blue})`;
+    context.fillStyle = colors[index];
     context.lineWidth = 2;
-    context.strokeStyle = "white";
+    context.strokeStyle = "oklch(0.985 0.002 247.839)";
     context.closePath();
     context.fill();
     context.stroke();
@@ -43,10 +43,10 @@ export function drawSegment(
     context.rotate(textAngle);
 
     context.font = "22px monospace";
-    context.fillStyle = "white";
+    context.fillStyle = "oklch(0.985 0.002 247.839)";
     context.textAlign = "center";
     const sliceOfText = item.title.length > 7 ? `${item.title.slice(0, 7)}...` : item.title;
-    context.fillText(sliceOfText, 130, 7);
+    context.fillText(sliceOfText, height / 3, 7);
     context.restore();
 
     newWheelOptions[item.title] = {

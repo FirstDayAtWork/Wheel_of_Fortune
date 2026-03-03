@@ -68,8 +68,8 @@ export default function WheelCanvas(props: WheelCanvasProps) {
   }, []);
 
   return (
-    <div className="max-w-lg self-center">
-      <canvas ref={canvasReference}></canvas>
+    <div className="self-center aspect-square">
+      <canvas ref={canvasReference} className="w-full h-full block"></canvas>
     </div>
   );
 }
