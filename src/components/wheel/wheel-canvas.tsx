@@ -47,6 +47,11 @@ export default function WheelCanvas(props: WheelCanvasProps) {
       if (canvasWheelData.current) {
         draw(canvasWheelData.current, 0);
         canvasWheelData.current[0].trueCords = { ...canvasWheelData.current[2] };
+
+        if (canvasWheelData.current[0].lsData.list.length === 1) {
+          const currentWinner = canvasWheelData.current[0].lsData.list[0].title;
+          window.dispatchEvent(new CustomEvent("wheelUpdate", { detail: currentWinner }));
+        }
       }
     }
   }, [settings.mode, eliminationList]);

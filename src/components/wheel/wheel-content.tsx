@@ -45,9 +45,16 @@ export default function WheelContent() {
     setFeedback(newValue);
   }
 
+  function handleReset() {
+    if (settings.mode === "elimination") {
+      setEliminationValue([]);
+    }
+    updateSettings("duration", 5);
+  }
+
   return (
     <div className="bg-muted/50 w-full max-w-3xl rounded-lg flex flex-col p-5 gap-5 text-center">
-      <WheelMenu updateSettings={updateSettings} settings={settings} />
+      <WheelMenu updateSettings={updateSettings} settings={settings} handleReset={handleReset} />
 
       <FeedBack feedback={feedback} />
 
