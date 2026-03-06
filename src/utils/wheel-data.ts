@@ -25,6 +25,7 @@ export const wheelData: WheelData = {
 export type Settings = {
   duration: number;
   isSpinning: boolean;
+  mode: "classic" | "elimination";
 };
 
-export const settingsDefaultValue: Settings = { duration: 5, isSpinning: false };
+export const settingsDefaultValue: Settings = { duration: 5, isSpinning: false, mode: "classic" };

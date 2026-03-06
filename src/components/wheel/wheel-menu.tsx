@@ -1,20 +1,26 @@
 import { Link } from "@tanstack/react-router";
 import { CircleArrowLeftIcon, DicesIcon, LoaderPinwheelIcon } from "lucide-react";
 import { type ChangeEvent, useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import useDebounce from "@/hooks/useDebounce";
 import type { Settings } from "@/utils/wheel-data";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 type WheelMenuProps = {
-  updateDuration: (newValue: number) => void;
-  updateSpinningStatus: (newStatus: boolean) => void;
+  updateSettings: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
   settings: Settings;
 };
 
 export default function WheelMenu(props: WheelMenuProps) {
-  const { updateDuration, updateSpinningStatus, settings } = props;
-
+  const { updateSettings, settings } = props;
   const [duration, setDuration] = useState(settings.duration || 5);
   const delayedDuration = useDebounce(duration, 500);
 
@@ -27,17 +33,21 @@ export default function WheelMenu(props: WheelMenuProps) {
   }
 
   function handleWheelSpin() {
-    updateSpinningStatus(true);
+    updateSettings("isSpinning", true);
+  }
+
+  function handleWheelMode(val: "classic" | "elimination") {
+    updateSettings("mode", val);
   }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    updateDuration(delayedDuration);
+    updateSettings("duration", delayedDuration);
   }, [delayedDuration]);
 
   return (
     <div className="flex gap-2.5">
-      <Link to={"/"}>
+      <Link to={"/"} disabled={settings.isSpinning}>
         <Button variant={"outline"} disabled={settings.isSpinning}>
           <CircleArrowLeftIcon className="size-5" />
           BACK
@@ -66,6 +76,23 @@ export default function WheelMenu(props: WheelMenuProps) {
         <DicesIcon className="size-5" />
         RANDOM
       </Button>
+
+      <Select
+        name="wheel-mode"
+        value={settings.mode}
+        onValueChange={handleWheelMode}
+        disabled={settings.isSpinning}
+      >
+        <SelectTrigger className="w-full h-9! max-w-37.5" title="Choose Wheel Mode">
+          <SelectValue placeholder="Choose Mode" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="classic">Classic</SelectItem>
+            <SelectItem value="elimination">Elimination</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
 
       <Button className="w-40" onClick={handleWheelSpin} disabled={settings.isSpinning}>
         <LoaderPinwheelIcon className="size-5" />

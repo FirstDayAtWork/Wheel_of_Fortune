@@ -1,44 +1,55 @@
 import { useEffect, useRef } from "react";
 import { getRandomNumber } from "@/api/get-random-number";
-import { useStorage } from "@/hooks/useStorage";
 import { createCanvas } from "@/utils/canvas/create-canvas";
 import { draw } from "@/utils/canvas/draw";
 import { spinWheel } from "@/utils/canvas/spin-wheel";
 import type { CanvasData } from "@/utils/canvas/types";
-import type { Settings, WheelData } from "@/utils/wheel-data";
+import { filterByValues } from "@/utils/filter-by-keys";
+import type { Settings, WheelData, WheelDataList } from "@/utils/wheel-data";
 
 type WheelCanvasProps = {
   updateFeedback: (newValue: string) => void;
-  updateSpinningStatus: (newStatus: boolean) => void;
-  handleDialogOpen: () => void;
+  updateSettings: <K extends keyof Settings>(key: K, value: Settings[K]) => void;
+  handleDialogOpen: (open: boolean) => void;
   settings: Settings;
   size: number;
+  wheelData: WheelData;
+  eliminationList: WheelDataList["hash"][];
 };
 
 export default function WheelCanvas(props: WheelCanvasProps) {
-  const { settings, size, updateSpinningStatus, updateFeedback, handleDialogOpen } = props;
+  const {
+    settings,
+    size,
+    updateSettings,
+    updateFeedback,
+    handleDialogOpen,
+    wheelData,
+    eliminationList,
+  } = props;
 
   const canvasReference = useRef<HTMLCanvasElement>(null);
   const canvasWheelData = useRef<CanvasData>(null);
-  const [wheelData] = useStorage<WheelData>(
-    {
-      idCounter: 0,
-      list: [],
-    },
-    "wheel_data",
-  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (canvasReference.current) {
-      canvasWheelData.current = createCanvas(canvasReference.current, wheelData, size);
+      const data =
+        settings.mode === "elimination" && eliminationList.length > 0
+          ? {
+              idCounter: wheelData.idCounter,
+              list: filterByValues(eliminationList, "hash", wheelData.list),
+            }
+          : wheelData;
+
+      canvasWheelData.current = createCanvas(canvasReference.current, data, size);
 
       if (canvasWheelData.current) {
         draw(canvasWheelData.current, 0);
         canvasWheelData.current[0].trueCords = { ...canvasWheelData.current[2] };
       }
     }
-  }, []);
+  }, [settings.mode, eliminationList]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -54,10 +65,19 @@ export default function WheelCanvas(props: WheelCanvasProps) {
       const numFromApi = await getRandomNumber(canvasWheelData.current[0].totalWeight);
 
       spinWheel(canvasWheelData.current, settings.duration, numFromApi, () => {
-        updateSpinningStatus(false);
-        handleDialogOpen();
+        updateSettings("isSpinning", false);
+        handleDialogOpen(true);
         if (!canvasWheelData.current) return;
+
         canvasWheelData.current[0].trueCords = { ...canvasWheelData.current[2] };
+
+        canvasWheelData.current[0].lsData =
+          settings.mode === "elimination" && eliminationList.length > 0
+            ? {
+                idCounter: wheelData.idCounter,
+                list: filterByValues(eliminationList, "hash", wheelData.list),
+              }
+            : wheelData;
       });
     })();
   }, [settings.isSpinning]);

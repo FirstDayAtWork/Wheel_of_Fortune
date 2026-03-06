@@ -11,7 +11,7 @@ import { Button } from "../ui/button";
 
 type LoadFileModalProps = {
   isOpen: boolean;
-  handleDialogOpen: () => void;
+  handleDialogOpen: (open: boolean) => void;
   feedback: string;
 };
 
