@@ -9,11 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import type { WheelData } from "@/utils/wheel-data";
+import type { WheelDataList } from "@/utils/wheel-data";
 import SaveFileButton from "./save-file-button";
 
 type SaveFileModalProps = {
-  data: WheelData;
+  data: WheelDataList[];
 };
 
 export function SaveFileModal(props: SaveFileModalProps) {

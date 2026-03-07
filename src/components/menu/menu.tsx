@@ -70,7 +70,7 @@ export default function Menu() {
 
           <LoadFileModal replace={replace} />
 
-          <SaveFileModal data={lsValue} />
+          <SaveFileModal data={lsValue.list} />
 
           <Button onClick={start} disabled={lsValue.list.length < 2}>
             <PlayIcon className="size-5" />

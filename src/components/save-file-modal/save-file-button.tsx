@@ -2,12 +2,12 @@ import { useRef } from "react";
 import { dataToCSV } from "@/utils/data-to-csv";
 import { dataToJSON } from "@/utils/data-to-json";
 import { setBlobUrl } from "@/utils/set-blob-url";
-import type { WheelData } from "@/utils/wheel-data";
+import type { WheelDataList } from "@/utils/wheel-data";
 import { Button } from "../ui/button";
 import { DialogClose } from "../ui/dialog";
 
 type SaveFileButtonProps = {
-  data: WheelData;
+  data: WheelDataList[];
   name: "csv" | "json";
 };
 
@@ -20,16 +20,16 @@ export default function saveFileButton(props: SaveFileButtonProps) {
     let convertedData = "";
 
     if (name === "csv") {
-      convertedData = dataToCSV(data.list);
+      convertedData = dataToCSV(data);
     } else if (name === "json") {
-      convertedData = JSON.stringify(dataToJSON(data.list), null, 2);
+      convertedData = JSON.stringify(dataToJSON(data), null, 2);
     }
 
     const result = setBlobUrl(convertedData, name);
 
     if (linkReference.current) {
       linkReference.current.href = result;
-      linkReference.current.download = `${result.length}_items.${name}`;
+      linkReference.current.download = `${data.length}_items.${name}`;
       linkReference.current.click();
     }
   }
