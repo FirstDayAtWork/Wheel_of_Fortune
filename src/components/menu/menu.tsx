@@ -58,23 +58,28 @@ export default function Menu() {
 
       <div className="flex gap-2.5 items-center">
         <ButtonGroup className="gap-2.5">
-          <Button onClick={add}>
+          <Button onClick={add} className="max-[510px]:w-10" title="Add Option">
             <PlusIcon className="size-5" />
-            Add
+            <span className="max-[510px]:hidden capitalize">add</span>
           </Button>
 
-          <Button onClick={clear}>
+          <Button onClick={clear} className="max-[510px]:w-10" title="Clear List">
             <BrushCleaningIcon className="size-5" />
-            Clear
+            <span className="max-[510px]:hidden capitalize">clear</span>
           </Button>
 
           <LoadFileModal replace={replace} />
 
           <SaveFileModal data={lsValue.list} />
 
-          <Button onClick={start} disabled={lsValue.list.length < 2}>
+          <Button
+            onClick={start}
+            disabled={lsValue.list.length < 2}
+            className="max-[510px]:w-10"
+            title="Go To Wheel"
+          >
             <PlayIcon className="size-5" />
-            Start
+            <span className="max-[510px]:hidden capitalize">start</span>
           </Button>
         </ButtonGroup>
       </div>

@@ -22,9 +22,9 @@ export function SaveFileModal(props: SaveFileModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="max-[510px]:w-10" title="Save Options">
           <SaveIcon className="size-5" />
-          Save
+          <span className="max-[510px]:hidden capitalize">save</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

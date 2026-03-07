@@ -37,7 +37,7 @@ export default function ListOption(props: ListOptionProps) {
 
   return (
     <div className="flex gap-2.5">
-      <Label htmlFor={id.toString()} className="text-sm flex-none">
+      <Label htmlFor={id.toString()} className="text-sm flex-none w-7.5">
         {`#${optionValue.id}`}
       </Label>
 

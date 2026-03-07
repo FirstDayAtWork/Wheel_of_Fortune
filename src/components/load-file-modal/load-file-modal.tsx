@@ -85,9 +85,9 @@ export function LoadFileModal(props: LoadFileModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="max-[510px]:w-10" title="Load Options">
           <FileUpIcon className="size-5" />
-          Load
+          <span className="max-[510px]:hidden capitalize">load</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
