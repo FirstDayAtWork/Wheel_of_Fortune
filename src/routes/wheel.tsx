@@ -8,8 +8,8 @@ export const Route = createFileRoute("/wheel")({
 
 function RouteComponent() {
   return (
-    <ClientOnly fallback={<Loader height="h-30" width="w-30" />}>
-      <WheelContent />
-    </ClientOnly>
+    // <ClientOnly fallback={<Loader height="h-30" width="w-30" />}>
+    <WheelContent />
+    // </ClientOnly>
   );
 }

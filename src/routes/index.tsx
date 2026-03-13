@@ -6,8 +6,8 @@ export const Route = createFileRoute("/")({ component: App });
 
 function App() {
   return (
-    <ClientOnly fallback={<Loader height="h-30" width="w-30" />}>
-      <Menu />
-    </ClientOnly>
+    // <Client Only fallback={<Loader height="h-30" width="w-30" />}>
+    <Menu />
+    // </ClientOnly>
   );
 }
