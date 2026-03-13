@@ -14,9 +14,9 @@ const config = defineConfig({
     },
   },
   plugins: [
-    devtools(),
     tanstackStart(),
     netlify(),
+    devtools(),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
@@ -27,15 +27,6 @@ const config = defineConfig({
       },
     }),
   ],
-  build: {
-    rollupOptions: {
-      output: {
-        assetFileNames: "assets/[name].[ext]",
-        chunkFileNames: "chunks/[name].js",
-        entryFileNames: "entries/[name].js",
-      },
-    },
-  },
 });
 
 export default config;
