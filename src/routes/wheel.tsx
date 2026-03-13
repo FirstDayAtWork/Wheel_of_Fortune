@@ -1,13 +1,15 @@
 import { ClientOnly, createFileRoute } from "@tanstack/react-router";
-import Menu from "@/components/menu/menu";
 import { Loader } from "@/components/ui/loader";
+import WheelContent from "@/components/wheel/wheel-content";
 
-export const Route = createFileRoute("/")({ component: App });
+export const Route = createFileRoute("/wheel")({
+  component: RouteComponent,
+});
 
-function App() {
+function RouteComponent() {
   return (
     <ClientOnly fallback={<Loader height="h-30" width="w-30" />}>
-      <Menu />
+      <WheelContent />
     </ClientOnly>
   );
 }
