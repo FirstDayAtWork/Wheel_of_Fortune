@@ -39,31 +39,18 @@ export function LoadFileModal(props: LoadFileModalProps) {
       if (text && (files[0].type === "application/json" || files[0].type === "text/csv")) {
         try {
           res = JSON.parse(text);
-
-          if (Array.isArray(res) && res.every(validateJsonSchema)) {
-            dataReference.current = res.map((item: Omit<WheelDataList, "id" | "hash">, index) => {
-              return {
-                ...item,
-                id: index + 1,
-                hash: crypto.randomUUID(),
-              };
-            });
-
-            setError(false);
-          } else {
-            setError(true);
-          }
         } catch {
           res = csvToArray(text);
-
+        } finally {
           if (Array.isArray(res) && res.every(validateJsonSchema)) {
-            dataReference.current = res.map((item: Omit<WheelDataList, "id" | "hash">, index) => {
+            dataReference.current = res.map((item, index) => {
               return {
                 ...item,
                 id: index + 1,
                 hash: crypto.randomUUID(),
               };
             });
+
             setError(false);
           } else {
             setError(true);
