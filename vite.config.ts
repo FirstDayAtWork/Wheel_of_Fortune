@@ -15,18 +15,27 @@ const config = defineConfig({
   },
   plugins: [
     devtools(),
+    tanstackStart(),
     netlify(),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
     tailwindcss(),
-    tanstackStart(),
     viteReact({
       babel: {
         plugins: ["babel-plugin-react-compiler"],
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: "assets/[name].[ext]",
+        chunkFileNames: "chunks/[name].js",
+        entryFileNames: "entries/[name].js",
+      },
+    },
+  },
 });
 
 export default config;
